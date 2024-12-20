@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/ocart_backend"
+]
+resolver = "2"

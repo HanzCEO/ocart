@@ -69,21 +69,9 @@ fn pre_upgrade() {
 
 #[ic_cdk::post_upgrade]
 fn post_upgrade() {
-	let (
-		artists,
-		collections,
-		arts
-	): (
-		Vec<Artist>,
-		Vec<Collection>,
-		Vec<Art>
-	) = ic_cdk::storage::stable_restore().expect("Failed to restore state");
-	STATE.with(|state| {
-		*state.borrow_mut() = State {
-			artists,
-			collections,
-			arts
-		};
+	let (state,): (State,) = ic_cdk::storage::stable_restore().expect("Failed to restore state");
+	STATE.with(|s| {
+		*s.borrow_mut() = state;
 	});
 }
 

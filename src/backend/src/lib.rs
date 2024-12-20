@@ -1,47 +1,10 @@
-use candid::{CandidType};
-use serde::{Serialize, Deserialize};
+mod types;
 
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct Art {
-	name: String,
-	description: String,
-	image: String
-}
-
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct Collection {
-	name: String,
-	description: String,
-	arts: Vec<Art>
-}
-
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct Artist {
-	name: String,
-	collections: Vec<Collection>
-}
-
-#[derive(CandidType, Deserialize)]
-struct DetectionAtom {
-	art: Art,
-	confidence: u32
-}
-
-#[derive(CandidType, Deserialize)]
-struct DetectionReport {
-	similarities: Vec<DetectionAtom>
-}
-
-#[derive(Default)]
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct State {
-	artists: Vec<Artist>,
-	collections: Vec<Collection>,
-	arts: Vec<Art>
-}
+use std::collections::HashMap;
+use types::*;
 
 thread_local! {
-	static STATE: std::cell::RefCell<State> = std::cell::RefCell::default();
+	pub static STATE: std::cell::RefCell<State> = std::cell::RefCell::default();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -50,9 +13,9 @@ thread_local! {
 fn init() {
 	STATE.with(|state| {
 		*state.borrow_mut() = State {
-			artists: vec![],
-			collections: vec![],
-			arts: vec![]
+			artists: HashMap::new(),
+			collections: HashMap::new(),
+			arts: HashMap::new()
 		};
 	});
 }

@@ -90,35 +90,43 @@ fn post_upgrade() {
 ///////////////////////////////////////////////////////////////////
 
 #[ic_cdk::query]
-fn get_random_artists(amount: u32) -> Vec<Artist> {}
+fn get_random_artists(amount: u32) -> Vec<Artist> {
+	return vec![];
+}
 
 #[ic_cdk::query]
-fn get_random_collections(amount: u32) -> Vec<Collection> {}
+fn get_random_collections(amount: u32) -> Vec<Collection> {
+	return vec![];
+}
 
 #[ic_cdk::query]
-fn get_random_arts(amount: u32) -> Vec<Art> {}
+fn get_random_arts(amount: u32) -> Vec<Art> {
+	return vec![];
+}
 
 ///////////////////////////////////////////////////////////////////
 
 #[ic_cdk::update]
-fn update_inspiration_inference_session(prompt: String) -> u32 {}
+fn update_inspiration_inference_session(prompt: String) -> u32 { 0 }
 
 #[ic_cdk::query]
-fn get_inspiration_progress(session_id: u32) -> u32 {}
+fn get_inspiration_progress(session_id: u32) -> u32 { 0 }
 
 #[ic_cdk::query]
-fn get_inspiration_result(session_id: u32) -> String {}
+fn get_inspiration_result(session_id: u32) -> String { "".to_string() }
 
 ///////////////////////////////////////////////////////////////////
 
 #[ic_cdk::update]
-fn update_detection_inference_session() -> u32 {}
+fn update_detection_inference_session() -> u32 { 0 }
 
 #[ic_cdk::update]
-fn update_detection_session_data(id: u32, data: String) -> bool {}
+fn update_detection_session_data(id: u32, data: String) -> bool { false }
 
 #[ic_cdk::query]
-fn get_detection_progress(id: u32) -> u32 {}
+fn get_detection_progress(id: u32) -> u32 { 0 }
 
 #[ic_cdk::query]
-fn get_detection_result(id: u32) -> DetectionReport {}
+fn get_detection_result(id: u32) -> DetectionReport {
+	DetectionReport { similarities: vec![] }
+}

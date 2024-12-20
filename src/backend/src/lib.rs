@@ -130,3 +130,7 @@ fn get_detection_progress(id: u32) -> u32 { 0 }
 fn get_detection_result(id: u32) -> DetectionReport {
 	DetectionReport { similarities: vec![] }
 }
+
+///////////////////////////////////////////////////////////////////
+
+ic_cdk::export_candid!();

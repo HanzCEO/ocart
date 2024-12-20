@@ -1,20 +1,21 @@
-use candid::{CandidType, Deserialize};
+use candid::{CandidType};
+use serde::{Serialize, Deserialize};
 
-#[derive(CandidType, Deserialize)]
+#[derive(CandidType, Deserialize, Serialize, Clone)]
 struct Art {
 	name: String,
 	description: String,
 	image: String
 }
 
-#[derive(CandidType, Deserialize)]
+#[derive(CandidType, Deserialize, Serialize, Clone)]
 struct Collection {
 	name: String,
 	description: String,
 	arts: Vec<Art>
 }
 
-#[derive(CandidType, Deserialize)]
+#[derive(CandidType, Deserialize, Serialize, Clone)]
 struct Artist {
 	name: String,
 	collections: Vec<Collection>
@@ -29,6 +30,61 @@ struct DetectionAtom {
 #[derive(CandidType, Deserialize)]
 struct DetectionReport {
 	similarities: Vec<DetectionAtom>
+}
+
+#[derive(Default)]
+#[derive(CandidType, Deserialize, Serialize, Clone)]
+struct State {
+	artists: Vec<Artist>,
+	collections: Vec<Collection>,
+	arts: Vec<Art>
+}
+
+thread_local! {
+	static STATE: std::cell::RefCell<State> = std::cell::RefCell::default();
+}
+
+///////////////////////////////////////////////////////////////////
+
+#[ic_cdk::init]
+fn init() {
+	STATE.with(|state| {
+		*state.borrow_mut() = State {
+			artists: vec![],
+			collections: vec![],
+			arts: vec![]
+		};
+	});
+}
+
+#[ic_cdk::pre_upgrade]
+fn pre_upgrade() {
+	STATE.with(|state| {
+		let state = state.borrow();
+		ic_cdk::storage::stable_save((
+			state.clone(),
+		)).expect("Failed to save states");
+	});
+}
+
+#[ic_cdk::post_upgrade]
+fn post_upgrade() {
+	let (
+		artists,
+		collections,
+		arts
+	): (
+		Vec<Artist>,
+		Vec<Collection>,
+		Vec<Art>
+	) = ic_cdk::storage::stable_restore().expect("Failed to restore state");
+	STATE.with(|state| {
+		*state.borrow_mut() = State {
+			artists,
+			collections,
+			arts
+		};
+	});
 }
 
 ///////////////////////////////////////////////////////////////////

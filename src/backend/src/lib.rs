@@ -11,13 +11,13 @@ struct Art {
 struct Collection {
 	name: String,
 	description: String,
-	arts: Art[]
+	arts: Vec<Art>
 }
 
 #[derive(CandidType, Deserialize)]
 struct Artist {
 	name: String,
-	collections: Collection[]
+	collections: Vec<Collection>
 }
 
 #[derive(CandidType, Deserialize)]
@@ -28,19 +28,19 @@ struct DetectionAtom {
 
 #[derive(CandidType, Deserialize)]
 struct DetectionReport {
-	similarities: DetectionAtom[]
+	similarities: Vec<DetectionAtom>
 }
 
 ///////////////////////////////////////////////////////////////////
 
 #[ic_cdk::query]
-fn get_random_artists(amount: u32) -> Artist[] {}
+fn get_random_artists(amount: u32) -> Vec<Artist> {}
 
 #[ic_cdk::query]
-fn get_random_collections(amount: u32) -> Collection[] {}
+fn get_random_collections(amount: u32) -> Vec<Collection> {}
 
 #[ic_cdk::query]
-fn get_random_arts(amount: u32) -> Art[] {}
+fn get_random_arts(amount: u32) -> Vec<Art> {}
 
 ///////////////////////////////////////////////////////////////////
 

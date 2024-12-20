@@ -1,61 +1,137 @@
-# `ocart`
+# ICP + React + TypeScript + Vite
 
-Welcome to your new `ocart` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+This template provides a batteries included setup for an ICP/React application with the latest versions of Vite, TypeScript, Tailwind CSS, SWC, Eslint and React Query.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+> [!TIP]
+> Fork this repository as a starting point for your next ICP project.
+>
+> Live demo: <https://upacy-bqaaa-aaaal-qr7qa-cai.icp0.io>
 
-To learn more before you start working with `ocart`, see the following documentation available online:
+> [!TIP]
+> This template is also available in a version using [ic-reactor](https://www.npmjs.com/package/@ic-reactor/react) instead of React Query. Check out that version from the [ic-reactor branch](https://github.com/kristoferlund/ic-vite-react-next/tree/ic-reactor).
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]](LICENSE)
 
-If you want to start working on your project right away, you might want to try the following commands:
+![](./media/screenshot.png)
+
+## Features
+
+### Backend
+
+The Rust based backend exposes one endpoint only, the `greet` function that returns a greeting message.
+
+### Frontend
+
+The React/Vite/TS based frontend allows the user to input a name and click a button to fetch the greeting message from the backend.
+
+Dependencies:
+
+- [React 19](https://react.dev): The long awaited upgrade brings form actions, optimistic UI updates while mutating, etc etc.
+- [Vite 6](https://vite.dev/): The most significant major release since Vite 2, featuring a new Environment API for enhanced flexibility, extended framework support, and streamlined performance for modern web development.
+- [Tailwind 4](https://tailwindcss.com/docs/v4-beta): The new version of Tailwind CSS is a ground-up rewrite of the framework, providing faster builds, great new CSS classes and better performance.
+- [Tanstack Query 5](https://tanstack.com/query/latest): The template uses Tanstack Query for data fetching, caching and loading state management.
+- [SWC](https://swc.rs/): The Rust based compiler and bundler that provides up to 70x faster build times than Babel.
+- [Eslint 9](https://eslint.org/): The latest release of Eslint introduces the flat configuration API along with new rules and bug fixes.
+- [shadcn/ui](https://ui.shadcn.com/): Sorry, no. Shadcn is not available for Tailwind 4 yet. Soon hopefully.
+
+## Setup, dev environment
+
+There are two main ways to set up the dev environment:
+
+### 1. Using a VS Code Dev Container
+
+The dev containers extension lets you use a Docker container as a full-featured
+development environment. This repository includes a dev container configuration
+that you can use to open the project with all the necessary tools and
+dependencies pre-installed.
+
+Pre-requisites:
+
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+Once Docker, Visual Studio Code and the Dev Containers Extension are installed,
+you can open the project in a container by clicking the button below:
+
+[![Open locally in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/kristoferlund/ic-vite-react-next)
+
+### 2. Setup manually
+
+Pre-requisites:
+
+- [Local Internet Computer dev environment](https://internetcomputer.org/docs/current/developer-docs/backend/rust/dev-env)
+- [pnpm](https://pnpm.io/installation)
+
+Once you have the prerequisites installed, you can clone this repository and run
+the project.
+
+## Running the project
+
+### 1. Start the Internet Computer
 
 ```bash
-cd ocart/
-dfx help
-dfx canister --help
+dfx start --background
 ```
 
-## Running the project locally
+### 2. Install dependencies
 
-If you want to test your project locally, you can use the following commands:
+```
+pnpm install
+```
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+### 3. Deploy the canisters
 
-# Deploys your canisters to the replica and generates your candid interface
+```
 dfx deploy
 ```
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+## Develop
 
-If you have made changes to your backend canister, you can generate a new candid interface with
-
-```bash
-npm run generate
-```
-
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
-
-If you are making frontend changes, you can start a development server with
+During development, you can run the frontend with hot reloading using Vite.
 
 ```bash
-npm start
+pnpm run dev
 ```
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+## Contributors
 
-### Note on frontend environment variables
+<!-- readme: collaborators,contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/kristoferlund">
+                    <img src="https://avatars.githubusercontent.com/u/9698363?v=4" width="100;" alt="kristoferlund"/>
+                    <br />
+                    <sub><b>Kristofer</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
+<!-- readme: collaborators,contributors -end -->
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+## License
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+This project is licensed under the MIT License. See the LICENSE file for more
+details.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request if you
+have any suggestions or improvements.
+
+[contributors-shield]: https://img.shields.io/github/contributors/kristoferlund/ic-vite-react-next.svg?style=for-the-badge
+[contributors-url]: https://github.com/kristoferlund/ic-vite-react-next/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kristoferlund/ic-vite-react-next.svg?style=for-the-badge
+[forks-url]: https://github.com/kristoferlund/ic-vite-react-next/network/members
+[stars-shield]: https://img.shields.io/github/stars/kristoferlund/ic-vite-react-next?style=for-the-badge
+[stars-url]: https://github.com/kristoferlund/ic-vite-react-next/stargazers
+[issues-shield]: https://img.shields.io/github/issues/kristoferlund/ic-vite-react-next.svg?style=for-the-badge
+[issues-url]: https://github.com/kristoferlund/ic-vite-react-next/issues
+[license-shield]: https://img.shields.io/github/license/kristoferlund/ic-vite-react-next.svg?style=for-the-badge

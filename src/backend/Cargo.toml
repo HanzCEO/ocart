@@ -1,6 +1,6 @@
 [package]
-name = "ocart_backend"
-version = "0.1.0"
+name = "backend"
+version = "0.0.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,5 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 candid = "0.10"
-ic-cdk = "0.16"
-ic-cdk-timers = "0.10" # Feel free to remove this dependency if you don't need timers
+ic-cdk = "0.17"

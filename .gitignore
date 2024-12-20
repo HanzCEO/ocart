@@ -1,25 +1,29 @@
-# Various IDEs and Editors
-.vscode/
-.idea/
-**/*~
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Mac OSX temporary files
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-**/.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# dfx temporary files
-.dfx/
-
-# generated files
-**/declarations/
-
-# rust
-target/
-
-# frontend code
-node_modules/
-dist/
-.svelte-kit/
-
-# environment variables
 .env
+.dfx
+target
+canister_ids.json

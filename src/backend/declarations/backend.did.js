@@ -33,6 +33,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(Collection)],
         ['query'],
       ),
+    'update_artist' : IDL.Func([IDL.Text], [IDL.Opt(Artist)], []),
     'update_detection_inference_session' : IDL.Func([], [IDL.Nat32], []),
     'update_detection_session_data' : IDL.Func(
         [IDL.Nat32, IDL.Text],
@@ -42,6 +43,11 @@ export const idlFactory = ({ IDL }) => {
     'update_inspiration_inference_session' : IDL.Func(
         [IDL.Text],
         [IDL.Nat32],
+        [],
+      ),
+    'update_register_artist' : IDL.Func(
+        [IDL.Opt(IDL.Text)],
+        [IDL.Opt(Artist)],
         [],
       ),
   });

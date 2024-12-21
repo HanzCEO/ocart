@@ -1,47 +1,13 @@
-use candid::{CandidType};
-use serde::{Serialize, Deserialize};
+mod types;
+mod artist;
+mod utils;
 
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct Art {
-	name: String,
-	description: String,
-	image: String
-}
-
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct Collection {
-	name: String,
-	description: String,
-	arts: Vec<Art>
-}
-
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct Artist {
-	name: String,
-	collections: Vec<Collection>
-}
-
-#[derive(CandidType, Deserialize)]
-struct DetectionAtom {
-	art: Art,
-	confidence: u32
-}
-
-#[derive(CandidType, Deserialize)]
-struct DetectionReport {
-	similarities: Vec<DetectionAtom>
-}
-
-#[derive(Default)]
-#[derive(CandidType, Deserialize, Serialize, Clone)]
-struct State {
-	artists: Vec<Artist>,
-	collections: Vec<Collection>,
-	arts: Vec<Art>
-}
+use std::collections::HashMap;
+use rand::seq::IteratorRandom;
+use types::*;
 
 thread_local! {
-	static STATE: std::cell::RefCell<State> = std::cell::RefCell::default();
+	pub static STATE: std::cell::RefCell<State> = std::cell::RefCell::default();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -50,9 +16,9 @@ thread_local! {
 fn init() {
 	STATE.with(|state| {
 		*state.borrow_mut() = State {
-			artists: vec![],
-			collections: vec![],
-			arts: vec![]
+			artists: HashMap::new(),
+			collections: HashMap::new(),
+			arts: HashMap::new()
 		};
 	});
 }
@@ -69,21 +35,9 @@ fn pre_upgrade() {
 
 #[ic_cdk::post_upgrade]
 fn post_upgrade() {
-	let (
-		artists,
-		collections,
-		arts
-	): (
-		Vec<Artist>,
-		Vec<Collection>,
-		Vec<Art>
-	) = ic_cdk::storage::stable_restore().expect("Failed to restore state");
-	STATE.with(|state| {
-		*state.borrow_mut() = State {
-			artists,
-			collections,
-			arts
-		};
+	let (state,): (State,) = ic_cdk::storage::stable_restore().expect("Failed to restore state");
+	STATE.with(|s| {
+		*s.borrow_mut() = state;
 	});
 }
 
@@ -91,7 +45,11 @@ fn post_upgrade() {
 
 #[ic_cdk::query]
 fn get_random_artists(amount: u32) -> Vec<Artist> {
-	return vec![];
+	STATE.with(|s| {
+		let seed = ic_cdk::api::time() as u32;
+		let mut rng = utils::rng_with_seed(seed);
+		s.borrow().artists.values().choose_multiple(&mut rng, amount as usize).into_iter().cloned().collect()
+	})
 }
 
 #[ic_cdk::query]
@@ -129,6 +87,33 @@ fn get_detection_progress(id: u32) -> u32 { 0 }
 #[ic_cdk::query]
 fn get_detection_result(id: u32) -> DetectionReport {
 	DetectionReport { similarities: vec![] }
+}
+
+///////////////////////////////////////////////////////////////////
+
+#[ic_cdk::update]
+fn update_register_artist(name: Option<String>) -> Option<Artist> {
+	let caller = ic_cdk::caller();
+	if !artist::check_artist_existence_by_principal(caller) {
+		let profile = artist::create_artist();
+		if profile.is_some() && name.is_some() {
+			artist::update_artist(name.expect("Name cannot be None"))
+		} else {
+			None
+		}
+	} else {
+		None
+	}
+}
+
+#[ic_cdk::update]
+fn update_artist(name: String) -> Option<Artist> {
+	let caller = ic_cdk::caller();
+	if artist::check_artist_existence_by_principal(caller) {
+		artist::update_artist(name)
+	} else {
+		None
+	}
 }
 
 ///////////////////////////////////////////////////////////////////

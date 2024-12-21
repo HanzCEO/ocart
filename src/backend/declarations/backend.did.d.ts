@@ -23,9 +23,11 @@ export interface _SERVICE {
   'get_random_artists' : ActorMethod<[number], Array<Artist>>,
   'get_random_arts' : ActorMethod<[number], Array<Art>>,
   'get_random_collections' : ActorMethod<[number], Array<Collection>>,
+  'update_artist' : ActorMethod<[string], [] | [Artist]>,
   'update_detection_inference_session' : ActorMethod<[], number>,
   'update_detection_session_data' : ActorMethod<[number, string], boolean>,
   'update_inspiration_inference_session' : ActorMethod<[string], number>,
+  'update_register_artist' : ActorMethod<[[] | [string]], [] | [Artist]>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

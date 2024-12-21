@@ -11,7 +11,9 @@ service : () -> {
   get_random_artists : (nat32) -> (vec Artist) query;
   get_random_arts : (nat32) -> (vec Art) query;
   get_random_collections : (nat32) -> (vec Collection) query;
+  update_artist : (text) -> (opt Artist);
   update_detection_inference_session : () -> (nat32);
   update_detection_session_data : (nat32, text) -> (bool);
   update_inspiration_inference_session : (text) -> (nat32);
+  update_register_artist : (opt text) -> (opt Artist);
 }

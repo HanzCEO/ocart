@@ -1,32 +1,33 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import icLogo from "./assets/ic.svg";
-import GreetForm from "./components/greet-form";
+import { Routes, Route, Link } from "react-router-dom";
+import Explore from "./components/Explore";
 
-function App() {
+const App = () => {
   return (
-    <main>
-      <div className="flex flex-col gap-14 items-center">
-        <div className="flex gap-10">
-          <a
-            href="https://internetcomputer.org"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img src={icLogo} alt="ICP logo" className="h-20" />
-          </a>
-          <a href="https://vite.dev" target="_blank" rel="noreferrer">
-            <img src={viteLogo} alt="Vite logo" className="h-20" />
-          </a>
-          <a href="https://react.dev" target="_blank" rel="noreferrer">
-            <img src={reactLogo} alt="React logo" className="h-20" />
-          </a>
-        </div>
-        <h1>ICP + Vite + React</h1>
-        <GreetForm />
-      </div>
-    </main>
+    <div>
+      {/* Navigation Bar */}
+      <nav className="p-4 bg-gray-200">
+        <Link to="/" className="mr-4">
+          Home
+        </Link>
+        <Link to="/explore">
+          Explore
+        </Link>
+      </nav>
+
+      {/* Define Routes */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/explore" element={<Explore />} />
+      </Routes>
+    </div>
   );
-}
+};
+
+const Home = () => (
+  <div className="p-6">
+    <h1 className="text-2xl font-bold">Home Page</h1>
+    <p>Welcome to the Home Page!</p>
+  </div>
+);
 
 export default App;

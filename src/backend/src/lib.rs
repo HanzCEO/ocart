@@ -1,5 +1,7 @@
 mod types;
+mod artist;
 
+use rand::seq::IteratorRandom;
 use std::collections::HashMap;
 use types::*;
 
@@ -42,7 +44,10 @@ fn post_upgrade() {
 
 #[ic_cdk::query]
 fn get_random_artists(amount: u32) -> Vec<Artist> {
-	return vec![];
+	STATE.with(|s| {
+		let mut rng = rand::thread_rng();
+		s.borrow().artists.values().choose_multiple(&mut rng, amount as usize).into_iter().cloned().collect()
+	})
 }
 
 #[ic_cdk::query]

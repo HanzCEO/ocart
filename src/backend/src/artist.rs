@@ -11,6 +11,10 @@ pub fn create_artist() -> Option<Artist> {
 			name: caller.to_text(),
 			collections: vec![]
 		};
+		STATE.with(|s| {
+			let mut state = s.borrow_mut();
+			state.artists.insert(caller, new_artist.clone());
+		});
 		Some(new_artist)
 	} else {
 		None

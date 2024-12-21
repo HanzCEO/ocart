@@ -89,4 +89,31 @@ fn get_detection_result(id: u32) -> DetectionReport {
 
 ///////////////////////////////////////////////////////////////////
 
+#[ic_cdk::update]
+fn update_register_artist(name: Option<String>) -> Option<Artist> {
+	let caller = ic_cdk::caller();
+	if !artist::check_artist_existence_by_principal(caller) {
+		let profile = artist::create_artist();
+		if profile.is_some() && name.is_some() {
+			artist::update_artist(name.expect("Name cannot be None"))
+		} else {
+			None
+		}
+	} else {
+		None
+	}
+}
+
+#[ic_cdk::update]
+fn update_artist(name: String) -> Option<Artist> {
+	let caller = ic_cdk::caller();
+	if !artist::check_artist_existence_by_principal(caller) {
+		artist::update_artist(name)
+	} else {
+		None
+	}
+}
+
+///////////////////////////////////////////////////////////////////
+
 ic_cdk::export_candid!();

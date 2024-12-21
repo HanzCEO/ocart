@@ -109,7 +109,7 @@ fn update_register_artist(name: Option<String>) -> Option<Artist> {
 #[ic_cdk::update]
 fn update_artist(name: String) -> Option<Artist> {
 	let caller = ic_cdk::caller();
-	if !artist::check_artist_existence_by_principal(caller) {
+	if artist::check_artist_existence_by_principal(caller) {
 		artist::update_artist(name)
 	} else {
 		None
